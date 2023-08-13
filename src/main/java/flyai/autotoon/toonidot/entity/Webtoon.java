@@ -25,5 +25,5 @@ public class Webtoon {
     private Info info;
 
     @Column
-    private String webtoonUrl;
+    private String webtoonURL;
 }
