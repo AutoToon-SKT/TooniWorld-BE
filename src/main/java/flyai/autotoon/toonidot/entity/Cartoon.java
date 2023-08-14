@@ -14,10 +14,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Webtoon {
+public class Cartoon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long webtoonId;
+    private Long cartoonId;
 
     @JsonBackReference
     @OneToOne
@@ -25,5 +25,5 @@ public class Webtoon {
     private Info info;
 
     @Column
-    private String webtoonURL;
+    private String cartoonURL;
 }

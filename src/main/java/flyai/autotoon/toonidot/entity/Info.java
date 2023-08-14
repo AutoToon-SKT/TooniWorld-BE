@@ -49,7 +49,7 @@ public class Info {
     // OneToOne은 컬렉션 타입 안됨
     @JsonManagedReference
     @OneToOne(mappedBy = "info")
-    private Webtoon webtoon;
+    private Cartoon cartoon;
 
     @JsonManagedReference
     @OneToOne(mappedBy = "info")
