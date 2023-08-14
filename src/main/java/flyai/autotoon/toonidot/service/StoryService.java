@@ -2,7 +2,6 @@ package flyai.autotoon.toonidot.service;
 
 import flyai.autotoon.toonidot.dto.StorySaveRequestDto;
 import flyai.autotoon.toonidot.dto.StorySaveResponseDto;
-import flyai.autotoon.toonidot.entity.Info;
 import flyai.autotoon.toonidot.entity.Story;
 import flyai.autotoon.toonidot.repository.StoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ public class StoryService {
     @Transactional
     public StorySaveResponseDto saveStory(StorySaveRequestDto storySaveRequestDto){
         Story newStory = storyRepository.save(storySaveRequestDto.toEntity());
-
         return StorySaveResponseDto.builder()
                 .storyId(newStory.getStoryId())
                 .infoId(newStory.getInfo().getInfoId())

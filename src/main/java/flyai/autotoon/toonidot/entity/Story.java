@@ -20,7 +20,7 @@ public class Story {
 
     @JsonBackReference
     @OneToOne
-    @JoinColumn(name = "infoId")
+    @JoinColumn(name = "infoId", unique = true)//없으면 두개 생성 가능
     private Info info;
 
     @Column(nullable = false)
