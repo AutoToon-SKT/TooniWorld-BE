@@ -10,6 +10,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class InfoSaveResponseDto {
     private Long infoId;
-    //private User user;
+    private Long userId;
     private String toonName;
 }

@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class InfoSaveRequestDto {
 
-//    @Setter
-//    private User user;
-
     private String toonName;
 
     private String place;
@@ -36,7 +33,6 @@ public class InfoSaveRequestDto {
     @Builder
     public InfoSaveRequestDto( String toonName, String place, LocalDateTime toonDate, String partner,
                                     String mood, String weather, String style){
-        //this.user = user;
         this.toonName = toonName;
         this.place = place;
         this.toonDate = toonDate;

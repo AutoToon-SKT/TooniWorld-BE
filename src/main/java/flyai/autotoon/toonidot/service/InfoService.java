@@ -22,11 +22,11 @@ public class InfoService {
     @Transactional
     public InfoSaveResponseDto saveInfo(Long userId, InfoSaveRequestDto infoSaveRequestDto){
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 사용가이 존재하지 않습니다. user_id = "+userId));
-
+                .orElseThrow(()-> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. user_id = "+userId));
         Info newinfo = infoRepository.save(infoSaveRequestDto.toEntity(user));
         return InfoSaveResponseDto.builder()
                 .infoId(newinfo.getInfoId())
+                .userId(newinfo.getUser().getUserId())
                 .toonName(newinfo.getToonName())
                 .build();
     }
