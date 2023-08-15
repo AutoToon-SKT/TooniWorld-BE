@@ -46,6 +46,7 @@ public class Info {
     @JoinColumn(name = "userId")
     private User user;
 
+
     // OneToOne은 컬렉션 타입 안됨
     @JsonManagedReference
     @OneToOne(mappedBy = "info")

@@ -1,17 +1,21 @@
 package flyai.autotoon.toonidot.dto;
 
 import flyai.autotoon.toonidot.entity.Info;
+import flyai.autotoon.toonidot.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 public class InfoSaveRequestDto {
+
+//    @Setter
+//    private User user;
 
     private String toonName;
 
@@ -30,8 +34,9 @@ public class InfoSaveRequestDto {
 
 
     @Builder
-    public InfoSaveRequestDto(String toonName, String place, LocalDateTime toonDate, String partner,
+    public InfoSaveRequestDto( String toonName, String place, LocalDateTime toonDate, String partner,
                                     String mood, String weather, String style){
+        //this.user = user;
         this.toonName = toonName;
         this.place = place;
         this.toonDate = toonDate;
@@ -41,8 +46,9 @@ public class InfoSaveRequestDto {
         this.style = style;
     }
 
-    public Info toEntity() {
+    public Info toEntity(User user) {
         return Info.builder()
+                .user(user)
                 .toonName(toonName)
                 .place(place)
                 .toonDate(toonDate)
