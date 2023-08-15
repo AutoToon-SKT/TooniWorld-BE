@@ -20,12 +20,11 @@ public class StoryApiController {
     private final StoryService storyService;
     @PostMapping("/{infoId}/story")
     public SuccessResponse<StorySaveResponseDto> saveStory(
-            @PathVariable("infoId") Info infoId,
+            @PathVariable("infoId") Long infoId,
             @RequestBody StorySaveRequestDto storySaveRequestDto
             )
-    {
-        storySaveRequestDto.setInfo(infoId);
-        return SuccessResponse.success(Success.SAVE_STORY_SUCCESS, storyService.saveStory(storySaveRequestDto));
+    {;
+        return SuccessResponse.success(Success.SAVE_STORY_SUCCESS, storyService.saveStory(infoId, storySaveRequestDto));
     }
 
 }

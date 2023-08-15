@@ -5,19 +5,20 @@ import flyai.autotoon.toonidot.entity.Story;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class StorySaveRequestDto {
-
-    @Setter
-    private Info info;
 
     private String storyContent;
 
-    public Story toEntity(){
+    @Builder
+    public  StorySaveRequestDto(String storyContent){
+        this.storyContent=storyContent;
+    }
+
+    public Story toEntity(Info info){
         return Story.builder()
                 .info(info)
                 .storyContent(storyContent)
