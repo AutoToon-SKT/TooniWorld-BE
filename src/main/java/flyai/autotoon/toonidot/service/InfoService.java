@@ -2,6 +2,7 @@ package flyai.autotoon.toonidot.service;
 
 import flyai.autotoon.toonidot.dto.InfoSaveRequestDto;
 import flyai.autotoon.toonidot.dto.InfoSaveResponseDto;
+import flyai.autotoon.toonidot.dto.InfoUpdateRequestDto;
 import flyai.autotoon.toonidot.entity.Info;
 import flyai.autotoon.toonidot.entity.User;
 import flyai.autotoon.toonidot.repository.InfoRepository;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +29,20 @@ public class InfoService {
                 .userId(newinfo.getUser().getUserId())
                 .toonName(newinfo.getToonName())
                 .build();
+    }
+
+    @Transactional
+    public Long updateInfo(Long infoId, InfoUpdateRequestDto infoUpdateRequestDto){
+        Info info = infoRepository.findById(infoId)
+                .orElseThrow(()->new IllegalArgumentException("해당 웹툰 정보가 존재하지 않습니다. info_id = "+infoId));
+        info.update(
+                infoUpdateRequestDto.getToonName(),
+                infoUpdateRequestDto.getPlace(),
+                infoUpdateRequestDto.getPartner(),
+                infoUpdateRequestDto.getMood(),
+                infoUpdateRequestDto.getWeather(),
+                infoUpdateRequestDto.getStyle()
+                );
+        return infoId;
     }
 }

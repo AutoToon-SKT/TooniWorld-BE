@@ -3,16 +3,14 @@ package flyai.autotoon.toonidot.controller;
 
 import flyai.autotoon.toonidot.dto.InfoSaveRequestDto;
 import flyai.autotoon.toonidot.dto.InfoSaveResponseDto;
+import flyai.autotoon.toonidot.dto.InfoUpdateRequestDto;
 import flyai.autotoon.toonidot.dto.SuccessResponse;
 import flyai.autotoon.toonidot.entity.User;
 import flyai.autotoon.toonidot.exception.Success;
 import flyai.autotoon.toonidot.service.InfoService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -28,6 +26,15 @@ public class InfoApiController {
         )
     {
         return SuccessResponse.success(Success.SAVE_INFO_SUCCESS, infoService.saveInfo(userId, infoSaveRequestDto));
+    }
+
+    @PutMapping("/{userId}/{infoId}")
+    public SuccessResponse<Long> updateInfo(
+            @PathVariable("userId") Long userId,
+            @PathVariable("infoId") Long infoId,
+            @RequestBody InfoUpdateRequestDto infoUpdateRequestDto
+            ){
+        return  SuccessResponse.success(Success.UPDATE_INFO_SUCCESS, infoService.updateInfo(infoId, infoUpdateRequestDto));
     }
 
 }
