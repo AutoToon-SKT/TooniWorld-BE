@@ -14,17 +14,22 @@ import java.io.IOException;
 public class S3UploadService {
     private final AmazonS3 amazonS3;
 
-    @Value("${cloud.aws.s3.bucket")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
 
+    public String uploadImage(MultipartFile imageFile, String fileName) throws IOException {
+        String originalFilename = fileName + ".jpg"; // 이미지 확장자에 맞게 설정
+
+        // 이미지 파일을 S3에 업로드
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
+        metadata.setContentLength(imageFile.getSize());
+        metadata.setContentType("image/jpeg"); // 이미지 타입에 맞게 설정
+        amazonS3.putObject(bucket, originalFilename, imageFile.getInputStream(), metadata);
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        // 업로드된 이미지의 URL 반환
+        String imageUrl = amazonS3.getUrl(bucket, originalFilename).toString();
+        System.out.println("Uploaded file URL:" + imageUrl);
+        return imageUrl;
     }
 }
