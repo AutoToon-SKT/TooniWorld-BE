@@ -17,7 +17,6 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-
     public String uploadImage(MultipartFile imageFile, String fileName) throws IOException {
         String originalFilename = fileName + ".jpg"; // 이미지 확장자에 맞게 설정
 
