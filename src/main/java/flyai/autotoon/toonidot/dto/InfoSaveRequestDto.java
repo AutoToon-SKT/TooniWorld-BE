@@ -27,20 +27,21 @@ public class InfoSaveRequestDto {
 
     private String weather;
 
-    private String style;
+    private String toonStyle;
 
 
     @Builder
     public InfoSaveRequestDto( String toonName, String place, LocalDateTime toonDate, String partner,
-                                    String mood, String weather, String style){
+                                    String mood, String weather, String toonStyle){
         this.toonName = toonName;
         this.place = place;
         this.toonDate = toonDate;
         this.partner = partner;
         this.mood = mood;
         this.weather = weather;
-        this.style = style;
+        this.toonStyle = toonStyle;
     }
+
 
     public Info toEntity(User user) {
         return Info.builder()
@@ -51,7 +52,7 @@ public class InfoSaveRequestDto {
                 .partner(partner)
                 .mood(mood)
                 .weather(weather)
-                .style(style)
+                .toonStyle(toonStyle)
                 .build();
     }
 }

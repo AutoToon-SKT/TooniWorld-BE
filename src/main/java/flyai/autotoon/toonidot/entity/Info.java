@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Info {
     @Id
@@ -39,7 +40,7 @@ public class Info {
     private String weather;
 
     @Column(nullable = false)
-    private String style;
+    private String toonStyle;
 
     @JsonBackReference
     @ManyToOne
@@ -56,14 +57,13 @@ public class Info {
     @OneToOne(mappedBy = "info")
     private Story story;
 
-
-    public void update(String toonName, String place, String partner, String mood, String weather,String style){
+    public void update(String toonName, String place, String partner, String mood, String weather,String toonStyle){
         this.toonName = toonName;
         this.place = place;
         this.partner = partner;
         this.mood = mood;
         this.weather = weather;
-        this. style = style;
+        this. toonStyle = toonStyle;
     }
 
 }

@@ -41,7 +41,7 @@ public class InfoService {
                 infoUpdateRequestDto.getPartner(),
                 infoUpdateRequestDto.getMood(),
                 infoUpdateRequestDto.getWeather(),
-                infoUpdateRequestDto.getStyle()
+                infoUpdateRequestDto.getToonStyle()
                 );
         return infoId;
     }

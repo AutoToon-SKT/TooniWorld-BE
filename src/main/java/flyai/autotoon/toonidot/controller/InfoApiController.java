@@ -22,18 +22,16 @@ public class InfoApiController {
     @PostMapping("/{userId}/info")
     public SuccessResponse<InfoSaveResponseDto> saveInfo(
             @PathVariable("userId") Long userId,
-            @RequestBody InfoSaveRequestDto infoSaveRequestDto
-        )
+            @RequestBody InfoSaveRequestDto infoSaveRequestDto)
     {
         return SuccessResponse.success(Success.SAVE_INFO_SUCCESS, infoService.saveInfo(userId, infoSaveRequestDto));
     }
 
-    @PutMapping("/{userId}/{infoId}")
+    @PutMapping("/{userId}/info/{infoId}")
     public SuccessResponse<Long> updateInfo(
-            @PathVariable("userId") Long userId,
             @PathVariable("infoId") Long infoId,
-            @RequestBody InfoUpdateRequestDto infoUpdateRequestDto
-            ){
+            @RequestBody InfoUpdateRequestDto infoUpdateRequestDto)
+    {
         return  SuccessResponse.success(Success.UPDATE_INFO_SUCCESS, infoService.updateInfo(infoId, infoUpdateRequestDto));
     }
 

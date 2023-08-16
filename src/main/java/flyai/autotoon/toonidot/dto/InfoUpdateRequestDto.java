@@ -2,9 +2,7 @@ package flyai.autotoon.toonidot.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
 
 @Getter
 public class InfoUpdateRequestDto {
@@ -19,18 +17,18 @@ public class InfoUpdateRequestDto {
 
     private String weather;
 
-    private String style;
+    private String toonStyle;
 
 
     @Builder
     public InfoUpdateRequestDto( String toonName, String place,  String partner,
-                               String mood, String weather, String style){
+                               String mood, String weather, String toonStyle){
         this.toonName = toonName;
         this.place = place;
         this.partner = partner;
         this.mood = mood;
         this.weather = weather;
-        this.style = style;
+        this.toonStyle = toonStyle;
     }
 
 }
