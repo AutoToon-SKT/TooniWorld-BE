@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Info {
     @Id
@@ -39,20 +40,30 @@ public class Info {
     private String weather;
 
     @Column(nullable = false)
-    private String style;
+    private String toonStyle;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
 
+
     // OneToOne은 컬렉션 타입 안됨
     @JsonManagedReference
     @OneToOne(mappedBy = "info")
-    private Webtoon webtoon;
+    private Cartoon cartoon;
 
     @JsonManagedReference
     @OneToOne(mappedBy = "info")
     private Story story;
+
+    public void update(String toonName, String place, String partner, String mood, String weather,String toonStyle){
+        this.toonName = toonName;
+        this.place = place;
+        this.partner = partner;
+        this.mood = mood;
+        this.weather = weather;
+        this. toonStyle = toonStyle;
+    }
 
 }

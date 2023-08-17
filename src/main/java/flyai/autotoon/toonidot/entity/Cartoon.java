@@ -14,16 +14,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Webtoon {
+public class Cartoon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long webtoonId;
+    private Long cartoonId;
 
     @JsonBackReference
     @OneToOne
-    @JoinColumn(name = "infoId")
+    @JoinColumn(name = "infoId",unique = true) //중복생성 막기위해 unique값 설정
     private Info info;
 
     @Column
-    private String webtoonURL;
+    private String cartoonURL;
 }
