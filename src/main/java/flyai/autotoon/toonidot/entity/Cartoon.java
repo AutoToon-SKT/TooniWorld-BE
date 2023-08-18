@@ -26,4 +26,12 @@ public class Cartoon {
 
     @Column
     private String cartoonURL;
+
+    public void setInfo(Info info) {
+        this.info = info;
+    }
+
+    public void setCartoonURL(String cartoonURL) {
+        this.cartoonURL = cartoonURL;
+    }
 }
