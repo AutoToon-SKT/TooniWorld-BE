@@ -23,7 +23,7 @@ public class Story {
     @JoinColumn(name = "infoId", unique = true)//없으면 두개 생성 가능
     private Info info;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length=2000)
     private String storyContent;
 
     public void update(String storyContent){
