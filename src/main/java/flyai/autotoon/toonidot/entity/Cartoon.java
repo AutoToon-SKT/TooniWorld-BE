@@ -20,7 +20,7 @@ public class Cartoon {
     private Long cartoonId;
 
     @JsonBackReference
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "infoId",unique = true) //중복생성 막기위해 unique값 설정
     private Info info;
 
