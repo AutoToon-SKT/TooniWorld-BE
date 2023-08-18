@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -50,8 +52,8 @@ public class Info {
 
     // OneToOne은 컬렉션 타입 안됨
     @JsonManagedReference
-    @OneToOne(mappedBy = "info")
-    private Cartoon cartoon;
+    @OneToMany(mappedBy = "info")
+    private List<Cartoon> cartoonList = new ArrayList <>();
 
     @JsonManagedReference
     @OneToOne(mappedBy = "info")
