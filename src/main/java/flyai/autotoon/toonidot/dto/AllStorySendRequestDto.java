@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class AllStorySendRequestDto {
-    @Setter
+
     private String allStory;
+
 
     @Builder
     public AllStorySendRequestDto(String allStory){

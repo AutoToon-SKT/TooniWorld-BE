@@ -8,16 +8,12 @@ import flyai.autotoon.toonidot.repository.StoryRepository;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 @RequiredArgsConstructor
 @Service
 public class StoryService {
@@ -59,18 +55,19 @@ public class StoryService {
                         + "그림체 : " + info.getToonStyle() + "\n"
                         + requestDto.getStoryContent());
 
+
         AllStorySendRequestDto allStorySendRequestDto = new AllStorySendRequestDto();
         allStorySendRequestDto.setAllStory(allStory);
+        ;
 
         WebClient webclient = WebClient.builder().baseUrl("http://localhost:8000").build();
-
-
         AllStorySendResponseDto allStorySendResponseDto= webclient.post()
-                .uri("/{userId}/{infoId}/allstory/", userId, infoId)
-                .bodyValue(requestDto)
+                .uri("/{userId}/{infoId}/allstory", userId, infoId)
+                .bodyValue(allStorySendRequestDto)
                 .retrieve()
                 .bodyToMono(AllStorySendResponseDto.class)
                 .block();
+
 
         return allStorySendResponseDto;
     }
