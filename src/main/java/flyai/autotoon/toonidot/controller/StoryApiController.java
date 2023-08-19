@@ -1,7 +1,6 @@
 package flyai.autotoon.toonidot.controller;
 
 import flyai.autotoon.toonidot.dto.*;
-import flyai.autotoon.toonidot.entity.Info;
 import flyai.autotoon.toonidot.exception.Success;
 import flyai.autotoon.toonidot.service.StoryService;
 
@@ -30,5 +29,13 @@ public class StoryApiController {
         return  SuccessResponse.success(Success.UPDATE_STORY_SUCCESS, storyService.updateStory(storyId, storyUpdateRequestDto));
     }
 
+    @PostMapping("{userId}/{infoId}/sendallstory")
+    public SuccessResponse<AllStorySendResponseDto> sendStory(
+            @PathVariable("userId") Long userId,
+            @PathVariable("infoId") Long infoId,
+            @RequestBody StorySaveRequestDto requestDto)
+    {
+        return SuccessResponse.success(Success.SEND_ALL_STORY_SUCCESS, storyService.sendAllStory(userId,infoId,requestDto));
+    }
 
 }
