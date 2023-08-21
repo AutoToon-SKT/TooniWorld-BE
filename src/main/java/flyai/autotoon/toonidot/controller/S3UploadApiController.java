@@ -1,8 +1,11 @@
 package flyai.autotoon.toonidot.controller;
 
+import flyai.autotoon.toonidot.dto.CartoonSaveRequestDto;
+import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
 import flyai.autotoon.toonidot.service.S3UploadService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,22 +14,26 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class S3UploadApiController {
+
     private final S3UploadService s3UploadService;
 
-    @Autowired
-    public S3UploadApiController(S3UploadService s3UploadService) {
-        this.s3UploadService = s3UploadService;
-    }
+    @PostMapping(value = "/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CartoonSaveResponseDto> saveCartoon(@RequestParam("file") MultipartFile cartoonFile,
+                                                              @RequestParam("fileName") String fileName,
+                                                              @RequestParam("infoId") Long infoId) {
 
-    @PostMapping("/upload-image")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile imageFile,
-                                              @RequestParam("fileName") String fileName) {
         try {
-            String imageUrl = s3UploadService.uploadImage(imageFile, fileName);
-            return ResponseEntity.ok("Uploaded image URL: " + imageUrl);
+            CartoonSaveRequestDto requestDto = CartoonSaveRequestDto.builder()
+                    .fileName(fileName)
+                    .cartoonFile(cartoonFile)
+                    .infoId(infoId)
+                    .build();
+            CartoonSaveResponseDto responseDto = s3UploadService.saveCartoon(requestDto);
+            return ResponseEntity.ok(responseDto);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
