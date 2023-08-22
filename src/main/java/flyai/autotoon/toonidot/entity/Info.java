@@ -45,7 +45,7 @@ public class Info {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private Users users;
 
 
     // OneToOne은 컬렉션 타입 안됨

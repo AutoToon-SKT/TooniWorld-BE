@@ -1,11 +1,10 @@
 package flyai.autotoon.toonidot.dto;
 
 import flyai.autotoon.toonidot.entity.Info;
-import flyai.autotoon.toonidot.entity.User;
+import flyai.autotoon.toonidot.entity.Users;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -43,9 +42,9 @@ public class InfoSaveRequestDto {
     }
 
 
-    public Info toEntity(User user) {
+    public Info toEntity(Users users) {
         return Info.builder()
-                .user(user)
+                .users(users)
                 .toonName(toonName)
                 .place(place)
                 .toonDate(toonDate)
