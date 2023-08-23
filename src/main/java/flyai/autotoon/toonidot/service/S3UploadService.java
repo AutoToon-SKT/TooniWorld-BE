@@ -11,8 +11,8 @@ import flyai.autotoon.toonidot.repository.InfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Service
@@ -25,7 +25,7 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-
+    @Transactional
     public CartoonSaveResponseDto saveCartoon(CartoonSaveRequestDto requestDto) throws IOException{
         String originalFilename = requestDto.getFileName() + ".jpg";
 
