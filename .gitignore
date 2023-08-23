@@ -37,4 +37,4 @@ out/
 .vscode/
 
 application-s3.properties
-application-rds.properties d
+application-rds.properties
