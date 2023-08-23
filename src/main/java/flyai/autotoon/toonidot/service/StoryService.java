@@ -58,7 +58,6 @@ public class StoryService {
 
         AllStorySendRequestDto allStorySendRequestDto = new AllStorySendRequestDto();
         allStorySendRequestDto.setAllStory(allStory);
-        ;
 
         WebClient webclient = WebClient.builder().baseUrl("http://localhost:8000").build();
         AllStorySendResponseDto allStorySendResponseDto= webclient.post()
