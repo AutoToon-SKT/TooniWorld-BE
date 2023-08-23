@@ -36,4 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-application-awsS3.properties
+application-s3.properties
+application-rds.properties
