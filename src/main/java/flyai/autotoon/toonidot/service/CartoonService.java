@@ -1,6 +1,5 @@
 package flyai.autotoon.toonidot.service;
 
-import flyai.autotoon.toonidot.dto.CartoonSaveRequestDto;
 import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
 import flyai.autotoon.toonidot.entity.Cartoon;
 import flyai.autotoon.toonidot.entity.Info;
@@ -21,7 +20,7 @@ public class CartoonService {
 
     @Transactional
     public List<CartoonSaveResponseDto> getAllCartoonsAndStory(Long userID){
-        List<Cartoon> cartoons = cartoonRepository.findByInfoUserUserId(userID);
+        List<Cartoon> cartoons = cartoonRepository.findByInfoUsersUserId(userID);
         return cartoons.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
