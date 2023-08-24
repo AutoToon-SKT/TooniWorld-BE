@@ -40,7 +40,7 @@ public class S3UploadService {
         System.out.println("Uploaded file URL : " + cartoonUrl);
 
         Info info = infoRepository.findById(requestDto.getInfoId())
-                .orElseThrow(()->new RuntimeException("Webtoon Upload Fail"));
+                .orElseThrow(()->new IllegalArgumentException("Info not found with ID: " + requestDto.getInfoId()));
 
         Cartoon cartoon = new Cartoon();
         cartoon.setInfo(info);
