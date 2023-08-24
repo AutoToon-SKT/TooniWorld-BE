@@ -13,20 +13,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class S3UploadApiController {
 
     private final S3UploadService s3UploadService;
 
-    @PostMapping(value = "/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{userId}/{infoId}/{cartoonId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CartoonSaveResponseDto> saveCartoon(@RequestParam("file") MultipartFile cartoonFile,
                                                               @RequestParam("fileName") String fileName,
                                                               @RequestParam("infoId") Long infoId) {
 
         try {
             CartoonSaveRequestDto requestDto = CartoonSaveRequestDto.builder()
-                    .fileName(fileName)
                     .cartoonFile(cartoonFile)
                     .infoId(infoId)
                     .build();
