@@ -8,24 +8,72 @@ import flyai.autotoon.toonidot.entity.Cartoon;
 import flyai.autotoon.toonidot.entity.Info;
 import flyai.autotoon.toonidot.repository.CartoonRepository;
 import flyai.autotoon.toonidot.repository.InfoRepository;
-import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Service
-@RequiredArgsConstructor
 public class S3UploadService {
-    private final AmazonS3 amazonS3;
     private final CartoonRepository cartoonRepository;
     private final InfoRepository infoRepository;
+    private final AmazonS3 s3Client;
+    private final Logger logger = LoggerFactory.getLogger(S3UploadService.class);
 
     @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    String bucket;
+
+    @Autowired
+    public S3UploadService(CartoonRepository cartoonRepository,
+                           InfoRepository infoRepository,
+                           @Qualifier("amazonS3Client") AmazonS3 s3Client) {
+        this.cartoonRepository = cartoonRepository;
+        this.infoRepository = infoRepository;
+        this.s3Client = s3Client;
+    }
+
+    public String uploadToS3(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        s3Client.putObject(bucket, fileName, file.getInputStream(), new ObjectMetadata());
+        return s3Client.getUrl(bucket, fileName).toString();
+    }
 
     @Transactional
+    public CartoonSaveResponseDto saveUrlToDB(CartoonSaveRequestDto requestDto) throws IOException {
+        Long infoId = requestDto.getInfoId();
+
+        System.out.println(infoId);
+
+        Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId()));
+
+        logger.info("Uploading cartoon with infoId: {}", infoId);
+
+        String cartoonUrl = uploadToS3(requestDto.getCartoonFile());
+
+
+        Cartoon cartoon = Cartoon.builder()
+                .info(relatedInfo)
+                .cartoonURL(cartoonUrl)
+                .build();
+
+        Cartoon savedCartoon = cartoonRepository.save(cartoon);
+
+        return CartoonSaveResponseDto.builder()
+                .infoId(savedCartoon.getInfo().getInfoId())
+                .cartoonURL(savedCartoon.getCartoonURL())
+                .build();
+
+        }
+    }
+
+    /*@Transactional
     public CartoonSaveResponseDto saveCartoon(CartoonSaveRequestDto requestDto) throws IOException{
         String originalFilename = requestDto.getFileName() + ".jpg";
 
@@ -50,3 +98,4 @@ public class S3UploadService {
         return new CartoonSaveResponseDto(info.getInfoId(), cartoonUrl);
     }
 }
+*/
