@@ -24,7 +24,7 @@ public class Cartoon {
     @JoinColumn(name = "infoId",unique = true) //중복생성 막기위해 unique값 설정
     private Info info;
 
-    @Column
+    @Column(nullable = false)
     private String cartoonURL;
 
     public void setInfo(Info info) {
