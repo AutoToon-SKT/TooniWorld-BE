@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class S3UploadService {
+public class    S3UploadService {
     private final AmazonS3 amazonS3;
     private final CartoonRepository cartoonRepository;
     private final InfoRepository infoRepository;
