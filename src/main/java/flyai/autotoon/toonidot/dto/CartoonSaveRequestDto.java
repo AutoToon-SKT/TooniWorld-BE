@@ -9,14 +9,16 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class CartoonSaveRequestDto {
     private MultipartFile cartoonFile;
-    private String fileName;
+    private Long userId;
     private Long infoId;
+    private Long cartoonId;
 
     @Builder
-    public CartoonSaveRequestDto(String fileName, MultipartFile cartoonFile, Long infoId) {
-        this.fileName = fileName;
+    public CartoonSaveRequestDto(MultipartFile cartoonFile,Long userId, Long infoId, Long cartoonId) {
         this.cartoonFile = cartoonFile;
+        this.userId = userId;
         this.infoId = infoId;
+        this.cartoonId = cartoonId;
     }
 
 }
