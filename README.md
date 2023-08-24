@@ -1,6 +1,16 @@
 # Toonidot-BE
 SKT FLY AI 3rd Project - &lt;Toonidot> BackEnd
 
+## Member
+
+- 강연수 (이화여자대학교/BE)
+- 김서현 (서울과학기술대학교/BE)
+
+## Setting
+- Springboot 2.7.14
+- java 11
+  
+
 ## 협업 규칙
 
 ### Git commit convention

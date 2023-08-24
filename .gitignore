@@ -17,8 +17,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-src/main/resources/application.properties
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -37,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+application-s3.properties
+application-rds.properties
