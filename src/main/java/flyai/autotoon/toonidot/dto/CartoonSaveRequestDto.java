@@ -1,7 +1,5 @@
 package flyai.autotoon.toonidot.dto;
 
-import flyai.autotoon.toonidot.entity.Cartoon;
-import flyai.autotoon.toonidot.entity.Info;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
