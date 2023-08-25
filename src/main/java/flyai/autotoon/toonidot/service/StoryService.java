@@ -59,7 +59,7 @@ public class StoryService {
         allStorySendRequestDto.setAllStory(allStory);
 
         //WebClient
-        WebClient webclient = WebClient.builder().baseUrl("http://localhost:8000").build();
+        WebClient webclient = WebClient.builder().baseUrl("http://15.164.170.90:8000").build();
 
         AllStorySendResponseDto allStorySendResponseDto= webclient.post()
                 .uri("/{userId}/{infoId}/allstory", userId, infoId)
