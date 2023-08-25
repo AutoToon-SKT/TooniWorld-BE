@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,8 +18,8 @@ public class InfoSaveRequestDto {
 
     private String place;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime toonDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate toonDate;
 
     private String partner;
 
@@ -30,8 +31,8 @@ public class InfoSaveRequestDto {
 
 
     @Builder
-    public InfoSaveRequestDto( String toonName, String place, LocalDateTime toonDate, String partner,
-                                    String mood, String weather, String toonStyle){
+    public InfoSaveRequestDto(String toonName, String place, LocalDate toonDate, String partner,
+                              String mood, String weather, String toonStyle){
         this.toonName = toonName;
         this.place = place;
         this.toonDate = toonDate;
