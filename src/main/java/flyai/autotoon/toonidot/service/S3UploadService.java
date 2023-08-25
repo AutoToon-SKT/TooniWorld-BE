@@ -15,6 +15,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
+@Service
+public class S3UploadService {
+    private final CartoonRepository cartoonRepository;
+    private final InfoRepository infoRepository;
+    private final AmazonS3 s3Client;
+    private final Logger logger = LoggerFactory.getLogger(S3UploadService.class);
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
