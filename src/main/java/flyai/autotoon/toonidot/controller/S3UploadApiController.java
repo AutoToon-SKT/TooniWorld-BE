@@ -4,6 +4,8 @@ import flyai.autotoon.toonidot.dto.CartoonSaveRequestDto;
 import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
 import flyai.autotoon.toonidot.service.S3UploadService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +16,28 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/upload")
 public class S3UploadApiController {
 
+    private final Logger logger = LoggerFactory.getLogger(S3UploadApiController.class);
     private final S3UploadService s3UploadService;
 
-    @PostMapping(value = "/{userId}/{infoId}/{cartoonId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CartoonSaveResponseDto> saveCartoon(@RequestParam("file") MultipartFile cartoonFile,
-                                                              @RequestParam("fileName") String fileName,
-                                                              @RequestParam("infoId") Long infoId) {
+    @PostMapping(value = "/user/{userId}/info/{infoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CartoonSaveResponseDto> saveCartoon(@PathVariable Long userId, // 경로 변수 추가
+                                                              @PathVariable Long infoId, // 경로 변수로 받아옴
+                                                              @RequestParam("file") MultipartFile cartoonFile) {
+
 
         try {
+            String uploadedUrl = s3UploadService.uploadToS3(cartoonFile);
+
             CartoonSaveRequestDto requestDto = CartoonSaveRequestDto.builder()
                     .cartoonFile(cartoonFile)
+                    .userId(userId)
                     .infoId(infoId)
                     .build();
-            CartoonSaveResponseDto responseDto = s3UploadService.saveCartoon(requestDto);
+
+            CartoonSaveResponseDto responseDto = s3UploadService.saveUrlToDB(requestDto);
             return ResponseEntity.ok(responseDto);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
