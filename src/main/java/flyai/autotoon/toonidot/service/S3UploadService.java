@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
@@ -50,8 +51,15 @@ public class S3UploadService {
 
         System.out.println(infoId);
 
-        Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId()));
+        Info relatedInfo;
+        try {
+            relatedInfo = infoRepository.getById(requestDto.getInfoId());
+        } catch (EntityNotFoundException ex) {
+            throw new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId());
+        }
+
+        //Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
+        //        .orElseThrow(() -> new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId()));
 
         logger.info("Uploading cartoon with infoId: {}", infoId);
 
