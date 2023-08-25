@@ -15,10 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
-@Service
-    private final CartoonRepository cartoonRepository;
-    private final InfoRepository infoRepository;
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
