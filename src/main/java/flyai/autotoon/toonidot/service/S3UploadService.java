@@ -16,7 +16,6 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Service
-
     private final CartoonRepository cartoonRepository;
     private final InfoRepository infoRepository;
 
