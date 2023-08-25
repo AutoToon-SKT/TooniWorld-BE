@@ -41,7 +41,11 @@ public class S3UploadService {
 
     public String uploadToS3(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        s3Client.putObject(bucket, fileName, file.getInputStream(), new ObjectMetadata());
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());  //Set the Content Length
+
+        s3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
         return s3Client.getUrl(bucket, fileName).toString();
     }
 
@@ -49,7 +53,7 @@ public class S3UploadService {
     public CartoonSaveResponseDto saveUrlToDB(CartoonSaveRequestDto requestDto) throws IOException {
         Long infoId = requestDto.getInfoId();
 
-        System.out.println(infoId);
+        // System.out.println(infoId);
 
         Info relatedInfo;
         try {
@@ -58,20 +62,23 @@ public class S3UploadService {
             throw new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId());
         }
 
-        //Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
+        // Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
         //        .orElseThrow(() -> new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId()));
 
         logger.info("Uploading cartoon with infoId: {}", infoId);
 
         String cartoonUrl = uploadToS3(requestDto.getCartoonFile());
+        logger.info("Uploading Url : {}", cartoonUrl);
 
 
         Cartoon cartoon = Cartoon.builder()
                 .info(relatedInfo)
                 .cartoonURL(cartoonUrl)
                 .build();
+        logger.info("객체 생성완료{} {}", relatedInfo, cartoonUrl);
 
         Cartoon savedCartoon = cartoonRepository.save(cartoon);
+        logger.info("Complete Saving");
 
         return CartoonSaveResponseDto.builder()
                 .infoId(savedCartoon.getInfo().getInfoId())
