@@ -42,7 +42,6 @@ public class StoryService {
     }
 
 
-    @Transactional
     public AllStorySendResponseDto sendAllStory (Long userId, Long infoId, StorySaveRequestDto requestDto){
         Info info = infoRepository.findById(infoId)
                 .orElseThrow(()->new IllegalArgumentException("해당 웹툰 정보가 존재하지 않습니다. info_id = " + infoId));
@@ -59,7 +58,9 @@ public class StoryService {
         AllStorySendRequestDto allStorySendRequestDto = new AllStorySendRequestDto();
         allStorySendRequestDto.setAllStory(allStory);
 
+        //WebClient
         WebClient webclient = WebClient.builder().baseUrl("http://localhost:8000").build();
+
         AllStorySendResponseDto allStorySendResponseDto= webclient.post()
                 .uri("/{userId}/{infoId}/allstory", userId, infoId)
                 .bodyValue(allStorySendRequestDto)
