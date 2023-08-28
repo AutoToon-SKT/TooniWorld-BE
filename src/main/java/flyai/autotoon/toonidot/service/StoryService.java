@@ -37,7 +37,11 @@ public class StoryService {
     public Long updateStory(Long storyId, StoryUpdateRequestDto storyUpdateRequestDto){
         Story story = storyRepository.findById(storyId)
                 .orElseThrow(()->new IllegalArgumentException("해당하는 이야기가 존재하지 않습니다. story_id = "+storyId));
-        story.update(storyUpdateRequestDto.getStoryContent());
+        story.update(storyUpdateRequestDto.getStoryContent(),
+                storyUpdateRequestDto.getStoryFirst(),
+                storyUpdateRequestDto.getStorySecond(),
+                storyUpdateRequestDto.getStoryThird(),
+                storyUpdateRequestDto.getStoryFourth());
         return storyId;
     }
 
