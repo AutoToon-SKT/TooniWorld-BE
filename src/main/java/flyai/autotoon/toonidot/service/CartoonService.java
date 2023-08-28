@@ -1,5 +1,6 @@
 package flyai.autotoon.toonidot.service;
 
+import flyai.autotoon.toonidot.dto.CartoonResponseDto;
 import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
 import flyai.autotoon.toonidot.entity.Cartoon;
 import flyai.autotoon.toonidot.entity.Info;
@@ -18,20 +19,32 @@ import java.util.stream.Collectors;
 public class CartoonService {
     private final CartoonRepository cartoonRepository;
 
+//    @Transactional
+//    public List<CartoonSaveResponseDto> getAllCartoonsAndStory(Long userID){
+//        List<Cartoon> cartoons = cartoonRepository.findByInfoUsersUserId(userID);
+//        return cartoons.stream()
+//                .map(this::mapToDTO)
+//                .collect(Collectors.toList());
+//    }
+//
     @Transactional
-    public List<CartoonSaveResponseDto> getAllCartoonsAndStory(Long userID){
-        List<Cartoon> cartoons = cartoonRepository.findByInfoUsersUserId(userID);
+    public List<CartoonResponseDto> getCartoon(Long infoId) {
+        List<Cartoon> cartoons = cartoonRepository.findByInfoInfoId(infoId);
         return cartoons.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    private CartoonSaveResponseDto mapToDTO(Cartoon cartoon){
+    private CartoonResponseDto mapToDTO(Cartoon cartoon){
         Info info = cartoon.getInfo();
         Hibernate.initialize(info);
-        return CartoonSaveResponseDto.builder()
-                .infoId(info.getInfoId())
+        return CartoonResponseDto.builder()
+                .toonCut(cartoon.getToonCut())
+                .toonCutSubTitle(cartoon.getToonCutSubTitle())
+                .toonOption(cartoon.getToonOption())
                 .cartoonURL(cartoon.getCartoonURL())
                 .build();
     }
+
+
 }

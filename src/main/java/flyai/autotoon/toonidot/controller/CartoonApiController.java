@@ -1,6 +1,9 @@
 package flyai.autotoon.toonidot.controller;
 
+import flyai.autotoon.toonidot.dto.CartoonResponseDto;
 import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
+import flyai.autotoon.toonidot.dto.SuccessResponse;
+import flyai.autotoon.toonidot.exception.Success;
 import flyai.autotoon.toonidot.service.CartoonService;
 
 import lombok.RequiredArgsConstructor;
@@ -13,13 +16,18 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/cartoons")
 @RequiredArgsConstructor
 public class CartoonApiController {
     private final CartoonService cartoonService;
 
-    @GetMapping("/{userId}")
-    public List<CartoonSaveResponseDto> getUserCartoonsAndStories(@PathVariable Long userId){
-        return cartoonService.getAllCartoonsAndStory(userId);
+//    @GetMapping("/api/cartoons/{userId}")
+//    public List<CartoonSaveResponseDto> getUserCartoonsAndStories(@PathVariable Long userId){
+//        return cartoonService.getAllCartoonsAndStory(userId);
+//    }
+
+    @GetMapping("/{infoId}/cartoon")
+    public SuccessResponse<List<CartoonResponseDto>> getCartoon(@PathVariable Long infoId){
+        return SuccessResponse.success(Success.GET_CARTOONS_SUCCESS,cartoonService.getCartoon(infoId));
     }
+
 }
