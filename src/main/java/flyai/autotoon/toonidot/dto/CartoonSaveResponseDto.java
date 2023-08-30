@@ -10,5 +10,5 @@ import lombok.Getter;
 public class CartoonSaveResponseDto {
     private Long infoId;
     private String cartoonURL;
-    // private String storyContent;
+
 }

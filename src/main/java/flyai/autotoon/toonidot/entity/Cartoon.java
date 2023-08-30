@@ -21,8 +21,17 @@ public class Cartoon {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "infoId",unique = true) //중복생성 막기위해 unique값 설정
+    @JoinColumn(name = "infoId")
     private Info info;
+
+    @Column(nullable = false)
+    private Long toonCut; //컷 분별 위함 - 한개의 만화에 4개의 컷 생성
+
+    @Column(nullable = false)
+    private String toonCutSubTitle; //각 컷별 소제목
+
+    @Column(nullable = false)
+    private Long toonOption; //컷별 사용자가 선택할 이미지 (컷마다 3개)
 
     @Column(nullable = false)
     private String cartoonURL;

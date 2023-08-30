@@ -26,7 +26,26 @@ public class Story {
     @Column(nullable = false, length=2000)
     private String storyContent;
 
-    public void update(String storyContent){
+    @Column(nullable = true)
+    private String storyFirst;
+
+    @Column(nullable = true)
+    private String storySecond;
+
+    @Column(nullable = true)
+    private String storyThird;
+
+    @Column(nullable = true)
+    private String storyFourth;
+
+
+    public void update(String storyContent, String storyFirst, String storySecond,
+                       String storyThird, String storyFourth){
         this.storyContent=storyContent;
+        this.storyContent = storyContent;
+        this.storyFirst = storyFirst;
+        this.storySecond = storySecond;
+        this.storyThird = storyThird;
+        this.storyFourth = storyFourth;
     }
 }

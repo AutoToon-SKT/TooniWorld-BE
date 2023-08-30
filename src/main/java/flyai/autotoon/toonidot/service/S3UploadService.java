@@ -6,8 +6,10 @@ import flyai.autotoon.toonidot.dto.CartoonSaveRequestDto;
 import flyai.autotoon.toonidot.dto.CartoonSaveResponseDto;
 import flyai.autotoon.toonidot.entity.Cartoon;
 import flyai.autotoon.toonidot.entity.Info;
+import flyai.autotoon.toonidot.entity.Users;
 import flyai.autotoon.toonidot.repository.CartoonRepository;
 import flyai.autotoon.toonidot.repository.InfoRepository;
+import flyai.autotoon.toonidot.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import java.io.IOException;
 @Service
 public class S3UploadService {
     private final CartoonRepository cartoonRepository;
+    private final UserRepository userRepository;
     private final InfoRepository infoRepository;
     private final AmazonS3 s3Client;
     private final Logger logger = LoggerFactory.getLogger(S3UploadService.class);
@@ -33,8 +36,10 @@ public class S3UploadService {
     @Autowired
     public S3UploadService(CartoonRepository cartoonRepository,
                            InfoRepository infoRepository,
+                           UserRepository userRepository,
                            @Qualifier("amazonS3Client") AmazonS3 s3Client) {
         this.cartoonRepository = cartoonRepository;
+        this.userRepository = userRepository;
         this.infoRepository = infoRepository;
         this.s3Client = s3Client;
     }
@@ -50,34 +55,18 @@ public class S3UploadService {
     }
 
     @Transactional
-    public CartoonSaveResponseDto saveUrlToDB(CartoonSaveRequestDto requestDto) throws IOException {
-        Long infoId = requestDto.getInfoId();
-
-        // System.out.println(infoId);
+    public CartoonSaveResponseDto saveUrlToDB(Long userId, Long infoId, CartoonSaveRequestDto requestDto) throws IOException {
+        Users users = userRepository.findById(userId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. user_id = "+userId));
 
         Info relatedInfo;
         try {
-            relatedInfo = infoRepository.getById(requestDto.getInfoId());
+            relatedInfo = infoRepository.getById(infoId);
         } catch (EntityNotFoundException ex) {
-            throw new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId());
+            throw new IllegalArgumentException("Invalid infoId - S3 : " + infoId);
         }
 
-        // Info relatedInfo = infoRepository.findById(requestDto.getInfoId())
-        //        .orElseThrow(() -> new IllegalArgumentException("Invalid infoId - S3 : " + requestDto.getInfoId()));
-
-        logger.info("Uploading cartoon with infoId: {}", infoId);
-
-        String cartoonUrl = uploadToS3(requestDto.getCartoonFile());
-        logger.info("Uploading Url : {}", cartoonUrl);
-
-
-        Cartoon cartoon = Cartoon.builder()
-                .info(relatedInfo)
-                .cartoonURL(cartoonUrl)
-                .build();
-        logger.info("객체 생성완료{} {}", relatedInfo, cartoonUrl);
-
-        Cartoon savedCartoon = cartoonRepository.save(cartoon);
+        Cartoon savedCartoon = cartoonRepository.save(requestDto.toEntity(relatedInfo));
         logger.info("Complete Saving");
 
         return CartoonSaveResponseDto.builder()
@@ -85,32 +74,6 @@ public class S3UploadService {
                 .cartoonURL(savedCartoon.getCartoonURL())
                 .build();
 
-        }
-    }
-
-    /*@Transactional
-    public CartoonSaveResponseDto saveCartoon(CartoonSaveRequestDto requestDto) throws IOException{
-        String originalFilename = requestDto.getFileName() + ".jpg";
-
-        // S3에 업로드
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(requestDto.getCartoonFile().getSize());
-        metadata.setContentType("image/jpeg");
-        amazonS3.putObject(bucket, originalFilename, requestDto.getCartoonFile().getInputStream(), metadata);
-
-        // Url 반환
-        String cartoonUrl = amazonS3.getUrl(bucket, originalFilename).toString();
-        System.out.println("Uploaded file URL : " + cartoonUrl);
-
-        Info info = infoRepository.findById(requestDto.getInfoId())
-                .orElseThrow(()->new IllegalArgumentException("Info not found with ID: " + requestDto.getInfoId()));
-
-        Cartoon cartoon = new Cartoon();
-        cartoon.setInfo(info);
-        cartoon.setCartoonURL(cartoonUrl);
-        cartoonRepository.save(cartoon);
-
-        return new CartoonSaveResponseDto(info.getInfoId(), cartoonUrl);
     }
 }
-*/
+

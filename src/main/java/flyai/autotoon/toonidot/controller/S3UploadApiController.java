@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
@@ -25,19 +26,15 @@ public class S3UploadApiController {
     @PostMapping(value = "/user/{userId}/info/{infoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CartoonSaveResponseDto> saveCartoon(@PathVariable Long userId, // 경로 변수 추가
                                                               @PathVariable Long infoId, // 경로 변수로 받아옴
-                                                              @RequestParam("file") MultipartFile cartoonFile) {
-
+                                                              @RequestPart CartoonSaveRequestDto cartoonSaveRequestDto,
+                                                              @RequestPart("file") MultipartFile cartoonFile) {
 
         try {
             String uploadedUrl = s3UploadService.uploadToS3(cartoonFile);
+            cartoonSaveRequestDto.setCartoonURL(uploadedUrl);
 
-            CartoonSaveRequestDto requestDto = CartoonSaveRequestDto.builder()
-                    .cartoonFile(cartoonFile)
-                    .userId(userId)
-                    .infoId(infoId)
-                    .build();
+            CartoonSaveResponseDto responseDto = s3UploadService.saveUrlToDB(userId, infoId, cartoonSaveRequestDto);
 
-            CartoonSaveResponseDto responseDto = s3UploadService.saveUrlToDB(requestDto);
             return ResponseEntity.ok(responseDto);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
