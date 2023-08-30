@@ -19,12 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartoonApiController {
     private final CartoonService cartoonService;
-
-//    @GetMapping("/api/cartoons/{userId}")
-//    public List<CartoonSaveResponseDto> getUserCartoonsAndStories(@PathVariable Long userId){
-//        return cartoonService.getAllCartoonsAndStory(userId);
-//    }
-
     @GetMapping("/{infoId}/cartoon")
     public SuccessResponse<List<CartoonResponseDto>> getCartoon(@PathVariable Long infoId){
         return SuccessResponse.success(Success.GET_CARTOONS_SUCCESS,cartoonService.getCartoon(infoId));

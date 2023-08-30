@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
-    List<Cartoon> findByInfoUsersUserId(Long userId);
     List<Cartoon> findByInfoInfoId(Long infoId);
 }

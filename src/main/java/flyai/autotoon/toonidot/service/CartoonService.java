@@ -19,14 +19,6 @@ import java.util.stream.Collectors;
 public class CartoonService {
     private final CartoonRepository cartoonRepository;
 
-//    @Transactional
-//    public List<CartoonSaveResponseDto> getAllCartoonsAndStory(Long userID){
-//        List<Cartoon> cartoons = cartoonRepository.findByInfoUsersUserId(userID);
-//        return cartoons.stream()
-//                .map(this::mapToDTO)
-//                .collect(Collectors.toList());
-//    }
-//
     @Transactional
     public List<CartoonResponseDto> getCartoon(Long infoId) {
         List<Cartoon> cartoons = cartoonRepository.findByInfoInfoId(infoId);
