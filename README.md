@@ -1,5 +1,5 @@
 # Toonidot-BE
-SKT FLY AI 3rd Project - &lt;Toonidot> BackEnd
+SKT FLY AI 3기 대상작 <투니월드>의 벡엔드 레포지토리입니다.
 
 ## Member
 
